@@ -32,3 +32,18 @@ As **Team Leader**, I led both the frontend and backend development:
 
 
 
+## 🚀 How to Run
+
+1. Clone the repo:
+git clone https://github.com/ravipati-madhulika/Touristdestinations.git
+cd Touristdestinations
+
+2. Install dependencies:
+pip install -r requirements.txt
+
+3. Run the app:
+python app.py
+
+4. Open `http://127.0.0.1:5000/` in your browser.
+
+---
