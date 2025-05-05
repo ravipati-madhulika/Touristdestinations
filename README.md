@@ -30,5 +30,5 @@ As **Team Leader**, I led both the frontend and backend development:
 - **Database:** SQLite
 - **Tools:**GitHub, VS Code
 
-## 📁 Project Structure
+
 
