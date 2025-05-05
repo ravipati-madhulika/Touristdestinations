@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exploring Bharat's Heritage and Culture</title>
+
+  <!-- Poppins Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    body {
+      background-image: url("{{ url_for('static', filename='images/bg2.jpg') }}");
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #222;
+      font-size: 18px;
+    }
+
+    nav {
+      background-color: #003366;
+      color: white;
+      padding: 18px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav h1 {
+      margin: 0;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 18px;
+      font-size: 17px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffcc00;
+    }
+
+    .section {
+      background-color: rgba(255, 255, 255, 0.95);
+      margin: 50px auto;
+      padding: 50px;
+      max-width: 850px;
+      border-radius: 15px;
+      box-shadow: 0px 12px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .section h2 {
+      font-size: 32px;
+      margin-bottom: 30px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    form label {
+      display: block;
+      margin: 15px 0 8px;
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    form input[type="text"],
+    form textarea,
+    form input[type="file"] {
+      width: 100%;
+      padding: 14px;
+      font-size: 17px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      margin-bottom: 25px;
+    }
+
+    form textarea {
+      height: 140px;
+      resize: vertical;
+    }
+
+    form button {
+      background-color: #003366;
+      color: white;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #005599;
+    }
+
+    .section a {
+      display: inline-block;
+      margin-top: 25px;
+      text-decoration: none;
+      color: #003366;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .section a:hover {
+      color: #ff9900;
+    }
+
+    .footer {
+      text-align: center;
+      background-color: #003366;
+      color: white;
+      padding: 18px;
+      margin-top: 60px;
+      font-size: 17px;
+    }
+
+    .footer a {
+      color: #ffcc00;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .footer a:hover {
+      color: #ffffff;
+    }
+
+    .bottom-right-image {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 65px;
+      height: 65px;
+      z-index: 1000;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .bottom-right-image:hover {
+      transform: scale(1.1);
+    }
+
+    .chatbot-container {
+      display: none;
+      position: fixed;
+      bottom: 110px;
+      right: 30px;
+      width: 320px;
+      height: 420px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    .chatbot-container iframe {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav h1 {
+        margin-bottom: 10px;
+        font-size: 22px;
+      }
+
+      nav a {
+        margin: 6px 10px;
+        font-size: 16px;
+      }
+
+      .section {
+        padding: 30px;
+      }
+
+      .section h2 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <h1>EXPLORING BHARAT'S HERITAGE AND CULTURE</h1>
+    <div>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('india') }}">Map</a>
+      <a href="{{ url_for('gallery') }}">Gallery</a>
+      <a href="{{ url_for('hiddengems') }}">Hidden Gems</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Upload Section -->
+  <div class="section">
+    <h2>Upload a New Post</h2>
+    <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+      <label for="name">Place Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" required></textarea>
+
+      <label for="images">Upload Images:</label>
+      <input type="file" id="images" name="images" multiple accept="image/*" />
+
+      <button type="submit">Upload</button>
+    </form>
+
+    <a href="{{ url_for('hiddengems') }}">View All Posts</a>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>&copy; <span id="year"></span> Exploring Bharat | Designed with ❤️</p>
+  </div>
+
+  <!-- Chatbot Icon -->
+  <img src="{{ url_for('static', filename='images/chat.avif') }}" alt="Chat Icon" class="bottom-right-image" id="chatbot-icon"/>
+
+  <!-- Chatbot -->
+  <div class="chatbot-container" id="chatbot-container">
+    <iframe src="https://your-chatbot-url-here"></iframe>
+  </div>
+
+  <script>
+    const chatbotIcon = document.getElementById('chatbot-icon');
+    const chatbotContainer = document.getElementById('chatbot-container');
+
+    chatbotIcon.addEventListener('click', function () {
+      chatbotContainer.style.display = chatbotContainer.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

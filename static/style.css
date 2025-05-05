@@ -1,0 +1,15 @@
+body {
+    font-family: 'Arial, sans-serif';
+    background-size: cover;
+    color: black;
+    text-align: center;
+}
+header {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+}
+nav a {
+    color: black;
+    margin: 0 15px;
+    text-decoration: none;
+}

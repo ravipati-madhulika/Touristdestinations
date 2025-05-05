@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>India Map - Exploring Bharat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Poppins:wght@300;500&display=swap" rel="stylesheet" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+
+      body {
+  font-family: 'Poppins', sans-serif;
+  color: #f5f5f5;
+  background: url('{{ url_for("static", filename="images/back1.jpg") }}') no-repeat center center fixed;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3); /* Dark overlay */
+  z-index: -1; /* Ensures it stays behind content */
+}
+
+
+
+
+      @keyframes bgFade {
+        0%, 100% { filter: brightness(0.9); }
+        50% { filter: brightness(1); }
+      }
+
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(5, 15, 35, 0.85);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        height: 12vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px;
+      }
+
+      .logo h1 {
+        color: #00ff99;
+        font-size: 2rem;
+        text-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+        letter-spacing: 1px;
+      }
+
+      .menu {
+        display: flex;
+        gap: 30px;
+      }
+
+      .menu a {
+        text-decoration: none;
+        color: #dbe2e2;
+        font-size: 1.1rem;
+        position: relative;
+        transition: color 0.3s ease;
+      }
+
+      .menu a:hover {
+        color: #0f859c;
+        text-shadow: 0 0 10px rgba(182, 182, 182, 0.8);
+      }
+
+      .menu a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        left: 0;
+        bottom: -4px;
+        background-color: #e2e2e2;
+        transition: width 0.3s ease;
+      }
+
+      .menu a:hover::after {
+        width: 100%;
+      }
+
+      .intro-text {
+        background-color: rgba(23, 31, 138, 0.375);
+        width: 85%;
+        max-width: 800px;
+        border: 1px solid #ffffff33;
+        padding: 30px;
+        margin: 60px auto 30px;
+        text-align: center;
+        font-size: 1.2rem;
+        border-radius: 20px;
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.05);
+        animation: fadeInUp 1.5s ease;
+      }
+
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .map-frame {
+        max-width: 900px;
+        margin: 0 auto 60px;
+        padding: 15px;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 16px;
+        border: 2px solid #ffffff22;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+        transition: transform 0.3s ease;
+        animation: fadeInUp 2s ease;
+      }
+
+      .map-frame:hover {
+        transform: scale(1.003);
+      }
+
+      .map-frame img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .logo h1 {
+          font-size: 1.4rem;
+        }
+        .menu {
+          gap: 20px;
+        }
+        .intro-text {
+          font-size: 1rem;
+          padding: 20px;
+        }
+      }
+      .search-bar {
+        display: flex;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 20px;
+        padding: 5px 10px;
+        margin: 20px auto;
+        width: 80%;
+        max-width: 400px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        position: relative;
+      }
+
+      #search {
+        border: none;
+        padding: 8px;
+        margin-right: 10px;
+        border-radius: 10px;
+        font-size: 1rem;
+        width: 80%;
+        background: #fff;
+        color: #333;
+        outline: none;
+      }
+
+      #search-btn {
+        padding: 8px 16px;
+        background-color: #2cd587;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      #search-btn:hover {
+        background-color: #80eaff;
+      }
+
+      .autocomplete-items {
+        position: absolute;
+        top: 100%;
+        left: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        color: #333;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+      }
+
+      .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s ease;
+      }
+
+      .autocomplete-items div:hover {
+        background: #ffd700;
+        color: #fff;
+      }
+
+      /* Go to Top Button */
+      .go-to-top-btn {
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        background: #ffd700;
+        border: none;
+        color: #1e3c72;
+        font-size: 24px;
+        width: 48px;
+        height: 48px;
+        line-height: 48px;
+        text-align: center;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1001;
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        animation: pulseGlow 2s infinite ease-in-out;
+      }
+
+      .go-to-top-btn:hover {
+        background: #ff69b4;
+        box-shadow: 0 0 20px #ff69b4;
+        transform: scale(1.1);
+      }
+
+      .go-to-top-btn:active {
+        transform: scale(1.2);
+      }
+
+      @keyframes pulseGlow {
+        0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+        50% { box-shadow: 0 0 20px rgba(255, 215, 0, 1); }
+        100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+      }
+
+      .particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1000;
+      }
+
+      .droplet {
+        position: absolute;
+        width: 10px; /* Increased from 6px */
+        height: 16px; /* Increased from 10px */
+        border-radius: 50%;
+        transform-origin: center;
+        animation: dropletRise 1s ease-out forwards;
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Slightly larger glow */
+      }
+
+      @keyframes dropletRise {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--x), var(--y)) scale(0.5);
+          opacity: 0;
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo"><h1><b>EXPLORING BHARAT'S HERITAGE AND CULTURE</b></h1></div>
+      <div class="menu">
+        <a href="{{ url_for('home') }}" style="float: left;">Home</a>
+                    <a href="{{ url_for('gallery') }}" >Gallery</a>
+                    <a href="{{ url_for('hiddengems') }}" >Hidden Gems</a>
+                    <a href="{{ url_for('upload') }}" >Uploads</a>
+                    <a href="{{ url_for('logout') }}" style="float: right;">Logout</a>
+      </div>
+    </nav>
+    <div class="intro-text">
+      <p>Discover the hidden Tourist spots in Bharat</p>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Search states..." autocomplete="off" />
+      <button id="search-btn">Search</button>
+      <div id="autocomplete-list" class="autocomplete-items"></div>
+    </div>
+    <center>
+      <img src="{{ url_for('static', filename='images/finalmap.jpg') }}" usemap="#image-map" alt="Static Map of India" />
+      <map name="image-map">
+        <area target="" alt="Jammu and kashmir" title="Jammu and kashmir" href="jk.html" coords="175,170,170,176,161,179,159,189,161,196,161,202,162,207,162,214,166,222,172,222,180,225,185,232,190,237,196,241,202,242,207,238,212,228,218,224,224,223,234,222,234,229,237,234,244,237,242,226,246,219,229,216,225,207,215,200,207,190,200,180,193,174,187,170" shape="poly">
+    <area target="" alt="Ladakh" title="Ladakh" href="ladakh.html" coords="173,163,166,156,159,149,154,139,141,138,144,128,153,123,162,119,173,118,182,113,188,114,197,114,202,117,207,119,212,123,217,130,225,136,229,143,233,148,245,148,256,148,261,144,270,141,281,135,293,137,297,143,305,148,312,153,316,158,316,165,316,173,309,183,303,187,297,194,294,200,286,204,281,211,284,217,289,220,294,226,296,239,295,246,284,251,273,247,267,247,259,243,253,235,246,235,243,227,249,217,239,214,230,210,219,203,213,195,209,188,201,178,194,171" shape="poly">
+    <area target="" alt="Punjab" title="Punjab" href="punjab.html" coords="207,240,201,243,189,249,180,258,174,270,166,281,166,301,177,302,198,310,207,306,216,303,225,297,232,288,225,273,208,255" shape="poly">
+    <area target="" alt="Himachal pradesh" title="Himachal pradesh" href="himachalpradesh.html" coords="226,222,214,230,210,240,210,253,221,268,231,279,239,291,249,295,257,290,257,274,266,272,279,275,285,266,272,252,253,240" shape="poly">
+    <area target="" alt="Uttrakhand" title="Uttrakhand" href="uttrakhand.html" coords="251,295,258,287,261,277,266,275,273,279,279,279,284,271,296,277,302,278,309,283,316,290,322,295,328,296,326,303,319,311,314,319,313,328,309,339,286,331,276,319,263,315,256,308,251,303" shape="poly">
+    <area target="" alt="Haryana" title="Haryana" href="haryana.html" coords="176,311,188,307,201,309,215,306,223,302,231,291,238,294,245,299,237,308,236,320,233,335,240,345,246,357,241,367,232,362,232,351,215,354,207,344,196,329,181,320" shape="poly">
+    <area target="" alt="Bihar" title="Bihar" href="bihar.html" coords="405,376,414,380,425,384,433,389,445,391,456,395,468,395,482,398,497,398,506,395,502,409,502,415,499,431,489,431,478,443,468,451,453,446,441,449,431,453,419,457,409,451,395,450,390,432,403,426,416,418,405,410,405,398,414,393,405,383" shape="poly">
+    <area target="" alt="Jharkhand" title="Jharkhand" href="jharkhand.html" coords="395,466,392,452,400,451,411,452,423,454,433,452,449,446,462,446,472,447,481,440,491,428,488,440,484,461,471,464,457,467,448,481,456,494,464,497,466,504,454,498,457,513,445,514,436,512,432,504,420,507,412,504,410,495,409,484,404,472" shape="poly">
+    <area target="" alt="West bengal" title="West bengal" href="westbengal.html" coords="458,494,450,481,461,470,471,469,480,466,486,459,491,443,495,430,505,419,503,409,508,401,505,389,503,375,515,377,521,381,532,386,540,386,542,396,539,402,531,403,528,394,519,393,513,391,511,415,518,418,525,422,524,428,513,430,511,436,508,446,517,449,523,457,521,469,526,478,530,497,532,511,523,515,515,521,512,506,506,517,498,526,486,521,473,511,469,499" shape="poly">
+    <area target="" alt="Sikkim" title="Sikkim" href="sikkim.html" coords="502,370,506,361,509,350,515,350,521,350,519,362,517,369,516,374,507,374" shape="poly">
+    <area target="" alt="Meghalaya" title="Meghalaya" href="meghalaya.html" coords="553,415,559,409,567,406,577,407,589,404,602,402,607,406,610,414,613,418,615,426,606,426,598,419,593,422,583,422,576,425,567,425,558,425" shape="poly">
+    <area target="" alt="Uttar pradesh" title="Uttar pradesh" href="uttarpradesh.html" coords="248,303,242,306,238,317,237,334,242,350,248,361,246,373,251,386,259,390,270,391,278,396,286,408,281,420,270,430,266,438,266,451,268,461,278,463,277,451,277,430,283,436,290,439,303,441,314,435,318,443,333,449,341,443,351,445,362,450,373,451,372,465,380,472,389,468,394,453,388,435,398,429,416,423,405,411,402,399,413,402,402,379,390,378,375,376,364,369,346,360,333,352,317,344,300,339,287,335,279,324,269,319,262,320,257,309,254,299" shape="poly">
+    <area target="" alt="Arunachal pradesh" title="Arunachal pradesh" href="arunachal.html" coords="637,368,624,366,603,371,601,364,588,360,600,352,609,344,622,336,631,326,642,319,650,310,660,306,675,313,684,298,690,301,700,310,700,322,696,326,709,326,720,330,718,350,720,357,707,355,692,366,683,374,692,356,689,345,683,342,670,350" shape="poly">
+    <area target="" alt="Nagaland" title="Nagaland" href="nagaland.html" coords="638,416,637,404,645,401,651,390,660,383,662,375,675,368,673,379,675,387,672,398,664,405,652,408" shape="poly">
+    <area target="" alt="Manipur" title="Manipur" href="manipur.html" coords="626,446,630,434,635,418,643,414,654,407,663,408,666,420,665,431,661,437,657,451,649,452,641,452,632,448" shape="poly">
+    <area target="" alt="Tripura" title="Tripura" href="tripura.html" coords="606,448,597,452,586,457,588,466,591,477,597,485,604,475,610,461,613,452" shape="poly">
+    <area target="" alt="Mizoram" title="Mizoram" href="mizoram.html" coords="617,450,625,443,629,432,631,448,635,456,640,469,637,478,633,487,633,503,626,503,622,490,613,481,614,468,614,461" shape="poly">
+    <area target="" alt="Rajashtan" title="Rajashtan" href="{{ url_for('state', state_name='Rajasthan') }}" coords="175,302,155,303,140,320,120,338,110,358,84,360,75,354,63,366,55,386,68,390,73,398,67,413,79,418,83,431,90,444,107,444,119,447,130,450,139,454,143,469,154,478,165,488,175,490,183,480,185,466,181,444,189,440,195,444,202,448,203,457,196,470,205,470,218,462,228,462,235,452,236,439,243,436,228,429,226,419,239,409,250,404,262,394,249,383,243,371,230,362,227,356,219,355,210,350,199,340,197,330,184,322,175,314" shape="poly">
+    <area target="" alt="Madhya pradesh" title="Madhya pradesh" href="madhyapradesh.html" coords="240,434,228,426,231,418,242,407,262,400,268,391,278,393,283,400,283,410,274,422,267,432,264,444,266,461,277,462,282,454,280,445,276,432,289,438,304,440,313,436,327,443,344,440,360,445,366,450,378,468,390,464,388,470,378,475,362,474,348,477,362,485,358,490,353,499,348,505,339,511,332,514,329,526,330,535,330,546,321,545,314,533,301,532,281,531,270,534,250,536,237,527,222,530,218,546,201,535,183,532,170,527,162,515,163,507,173,494,181,483,186,472,181,454,182,444,189,441,201,446,201,458,193,468,206,468,218,463,235,459,236,442" shape="poly">
+    <area target="" alt="Gujarat" title="Gujarat" href="gujarat.html" coords="86,446,77,457,66,456,54,457,38,453,28,455,19,463,24,470,27,478,37,491,57,487,70,478,74,481,73,489,62,497,47,502,34,504,41,518,52,527,62,542,77,547,91,543,106,538,111,526,110,517,112,509,118,506,125,508,122,515,122,525,124,541,130,554,125,562,133,561,140,550,151,554,150,537,159,533,154,518,160,515,161,500,167,491,153,478,138,455,133,451,114,449,98,442" shape="poly">
+    <area target="" alt="Maharashtra" title="Maharashtra" href="maharashtra.html" coords="119,573,121,601,129,600,125,615,133,624,132,638,131,656,139,688,146,695,158,686,162,669,175,663,186,659,195,656,195,645,207,647,218,640,226,636,238,624,243,624,252,614,254,599,261,595,270,583,282,590,293,589,304,592,304,604,309,612,317,605,323,598,329,594,323,587,322,580,319,570,324,558,315,537,307,536,294,535,282,535,270,536,254,536,242,531,226,529,223,541,220,546,206,540,190,537,171,531,166,520,157,522,160,536,154,537,153,556,145,556,135,563" shape="poly">
+    <area target="" alt="Goa" title="Goa" href="{{ url_for('state', state_name='Goa') }}" coords="143,694,151,690,153,698,155,707,148,707" shape="poly">
+    <area target="" alt="Chattisgarh" title="Chattisgarh" href="chattisgarh.html" coords="316,609,333,625,346,632,336,632,354,618,364,600,359,583,356,570,376,578,366,567,371,547,383,541,391,532,397,512,408,505,407,487,401,475,392,473,379,476,362,475,352,477,362,485,357,496,346,509,334,512,330,528,334,540,330,548,323,548,324,568,323,576,330,592,327,596,320,597" shape="poly">
+    <area target="" alt="Odisha" title="Odisha" href="odisha.html" coords="348,629,354,619,362,604,360,591,358,576,373,581,372,570,370,557,378,544,389,541,394,532,401,518,414,507,423,507,437,511,450,516,461,505,476,512,484,519,490,526,480,535,479,544,479,561,471,569,461,577,447,585,436,593,356,628,369,616,378,617,388,605,400,599,412,600,428,593" shape="poly">
+    <area target="" alt="Telangana" title="Telangana" href="telangana.html" coords="244,685,242,677,239,660,247,644,245,630,246,620,252,610,252,600,264,596,265,583,275,585,281,592,291,592,300,590,300,604,306,614,313,614,322,617,328,625,332,632,345,635,351,636,345,642,339,650,325,656,316,658,309,660,304,664,288,672,287,681,277,683,267,687,258,688,249,688" shape="poly">
+    <area target="" alt="Andhra pradesh" title="Andhra pradesh" href="andhra.html" coords="241,684,229,690,226,703,227,713,220,716,225,732,227,742,237,744,245,744,254,743,260,744,264,751,267,760,265,767,260,772,265,776,276,765,282,765,294,760,299,758,309,753,314,747,310,731,309,712,312,693,321,689,331,690,340,680,345,672,357,674,363,667,367,658,377,645,393,638,401,626,413,617,426,600,412,605,401,604,391,606,385,617,377,621,370,620,366,624,356,632,349,645,339,651,329,654,319,661,309,664,303,669,290,672,286,680,274,686,258,688,245,689" shape="poly">
+    <area target="" alt="Karnataka" title="Karnataka" href="karnataka.html" coords="158,692,162,670,182,658,197,657,195,646,210,647,219,641,230,633,245,621,245,632,246,644,238,651,236,658,238,669,242,681,230,691,226,691,225,712,223,697,222,721,221,730,229,745,238,744,251,749,257,750,263,758,264,770,257,773,245,773,241,781,246,791,239,797,232,798,226,803,212,806,199,801,191,792,179,779,170,769,169,749,163,727,154,712,157,676" shape="poly">
+    <area target="" alt="Kerala" title="Kerala" href="{{ url_for('state', state_name='Kerala') }}" coords="227,891,229,873,232,861,232,840,221,840,221,829,207,816,207,804,190,796,184,785,173,776,180,796,187,801,195,816,199,826,197,836,205,846,208,859,205,872,216,885" shape="poly">
+    <area target="" alt="Tamil nadu" title="Tamil nadu" href="tamilnadu.html" coords="226,903,246,900,254,876,270,871,280,856,291,840,302,837,302,822,302,803,297,795,311,793,318,770,314,753,306,758,296,761,283,767,274,769,264,781,258,773,247,776,249,784,247,797,233,803,219,808,211,808,218,813,224,836,233,838,237,849,230,863,228,880,223,891" shape="poly">
+    <area target="" alt="Assam" title="Assam" href="assam.html" coords="551,407,545,397,548,387,557,381,565,383,578,382,593,376,610,373,631,373,643,366,650,361,661,352,673,345,683,342,685,349,685,357,678,361,669,366,659,370,654,382,647,391,640,398,636,404,633,412,634,420,630,428,622,437,617,446,608,444,613,432,611,413,609,408,597,402,585,404,611,413,576,404,559,404" shape="poly">
+        </map>
+        </center>
+        <script>
+          document.getElementById('search-btn').addEventListener('click', function() {
+            const query = document.getElementById('search').value.toLowerCase();
+            
+            // Map search queries to the corresponding URLs
+            const stateMap = {
+              'jammu and kashmir': 'jk.html',
+              'ladakh': 'ladakh.html',
+              'goa': 'goa.html',
+              'kerala': 'kerala.html', 
+              'Rajasthan':"{{ url_for('state', state_name='Rajasthan') }}"
+              // Add more states and their corresponding URLs here
+            };
+    
+            if(stateMap[query]) {
+              window.location.href = stateMap[query];  // Redirect to state page
+            } else {
+              alert('State not found. Please try another search.');
+            }
+          });
+        </script>
+        <button id="goToTopBtn" class="go-to-top-btn">↑</button>
+        <div class="particles-container" id="particlesContainer"></div>
+    
+        <script>
+          // Go to Top Button
+          const goToTopBtn = document.getElementById('goToTopBtn');
+          const particlesContainer = document.getElementById('particlesContainer');
+    
+          goToTopBtn.addEventListener('click', () => {
+            // Get button position
+            const rect = goToTopBtn.getBoundingClientRect();
+            const btnX = rect.left + rect.width / 2;
+            const btnY = rect.top + rect.height / 2;
+    
+            // Create droplets
+            for (let i = 0; i < 15; i++) {
+              const droplet = document.createElement('div');
+              droplet.classList.add('droplet');
+              // Holi-inspired colors
+              const colors = ['#ff69b4', '#00ced1', '#ffd700', '#800080'];
+              droplet.style.background = colors[Math.floor(Math.random() * colors.length)];
+              // Slight horizontal spread, mostly upward
+              const x = (Math.random() - 0.5) * 20; // -10 to +10px
+              const y = -(Math.random() * 120 + 60); // -60 to -180px (upward, slightly further)
+              droplet.style.setProperty('--x', `${x}px`);
+              droplet.style.setProperty('--y', `${y}px`);
+              droplet.style.left = `${btnX}px`;
+              droplet.style.top = `${btnY}px`;
+              particlesContainer.appendChild(droplet);
+              setTimeout(() => droplet.remove(), 1000);
+            }
+    
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth',
+            });
+          });
+    
+          // Search Bar Autocomplete
+          const states = [
+            'Jammu and Kashmir',
+            'Ladakh',
+            'Himachal Pradesh',
+            'Punjab',
+            'Uttarakhand',
+            'Haryana',
+            'Delhi',
+            'Rajasthan',
+            'Uttar Pradesh',
+            'Gujarat',
+            'Madhya Pradesh',
+            'Chhattisgarh',
+            'Bihar',
+            'Jharkhand',
+            'West Bengal',
+            'Sikkim',
+            'Arunachal Pradesh',
+            'Nagaland',
+            'Manipur',
+            'Mizoram',
+            'Tripura',
+            'Meghalaya',
+            'Assam',
+            'Odisha',
+            'Telangana',
+            'Andhra Pradesh',
+            'Karnataka',
+            'Goa',
+            'Kerala',
+            'Tamil Nadu',
+            'Andaman and Nicobar Islands',
+            'Chandigarh',
+            'Dadra and Nagar Haveli and Daman and Diu',
+            'Lakshadweep',
+            'Puducherry',
+          ];
+    
+          const searchInput = document.getElementById('search');
+          const autocompleteList = document.getElementById('autocomplete-list');
+    
+          searchInput.addEventListener('input', () => {
+            const value = searchInput.value.toLowerCase();
+            autocompleteList.innerHTML = '';
+            if (!value) return;
+    
+            const matches = states.filter((state) =>
+              state.toLowerCase().includes(value)
+            );
+            matches.forEach((match) => {
+              const item = document.createElement('div');
+              item.innerText = match;
+              item.addEventListener('click', () => {
+                searchInput.value = match;
+                autocompleteList.innerHTML = '';
+                const stateLink = match.toLowerCase().replace(/\s+/g, '-') + '.html';
+                window.location.href = stateLink === 'jammu-and-kashmir.html' ? 'jk.html' : stateLink;
+              });
+              autocompleteList.appendChild(item);
+            });
+          });
+    
+          document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !autocompleteList.contains(e.target)) {
+              autocompleteList.innerHTML = '';
+            }
+          });
+    
+          document.getElementById('search-btn').addEventListener('click', () => {
+            const value = searchInput.value.toLowerCase();
+            const match = states.find((state) => state.toLowerCase().includes(value));
+            if (match) {
+              const stateLink = match.toLowerCase().replace(/\s+/g, '-') + '.html';
+              window.location.href = stateLink === 'jammu-and-kashmir.html' ? 'jk.html' : stateLink;
+            }
+          });
+        </script>
+        
+  </body>
+</html>

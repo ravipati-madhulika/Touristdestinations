@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>West Bengal</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/bg5.jpg') }}");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        nav {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav h1 {
+    color: white;
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: 0.3s;
+    padding: 8px 16px;
+    border-radius: 5px;
+}
+
+.menu a:hover {
+    background-color: #ffcc00;
+    color: #333;
+}
+
+.menu a:active {
+    background-color: #e6b800;
+}
+
+        .section {
+            background: white;
+            color: black;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+        }
+        .section h2 {
+            text-align: center;
+            font-size: 30px;
+            padding: 10px;
+            background: black;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 20px 0;
+        }
+        .carousel {
+            position: relative;
+            width: 45%;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .carousel-images {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+        .prev:hover, .next:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .text {
+            width: 50%;
+            font-size: 18px;
+            text-align: justify;
+        }
+        .text p {
+            margin-bottom: 20px;
+        }
+        .review-btn {
+            display: inline-block;
+            background-color: #ffcc00;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .review-btn:hover {
+            background-color: #ff9900;
+        }
+        .map-container {
+            margin: 20px auto;
+            width: 80%;
+            max-width: 1000px;
+        }
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: black;
+            color: white;
+            margin-top: 20px;
+        }
+        .footer a {
+            color: #ffcc00;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .bottom-right-image {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: auto;
+    z-index: 1000;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.bottom-right-image:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+.chatbot-container {
+    position: fixed;
+    bottom: 80px; /* Adjust based on image size */
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    display: none; /* Initially hidden */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.chatbot-container iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo"><h1><b>EXPLORING BHARAT'S HERITAGE AND CULTURE</b></h1></div>
+        <div class="menu">
+          <a href="{{ url_for('home') }}" style="float: left;">Home</a>
+                      <a href="{{ url_for('gallery') }}" >Gallery</a>
+                      <a href="{{ url_for('hiddengems') }}" >Hidden Gems</a>
+                      <a href="{{ url_for('upload') }}" >Uploads</a>
+                      <a href="{{ url_for('logout') }}" style="float: right;">Logout</a>
+        </div>
+      </nav>
+    <center><h1 style="color: white; margin-top: 30px;">WEST BENGAL</h1></center>
+
+    <!-- Sandakphu Section -->
+    <div class="section">
+        <h2>Sandakphu</h2>
+        <div class="content">
+            <div class="carousel" id="sandakphu-carousel">
+                <div class="carousel-images">
+                    <img src="{{ url_for('static', filename='images/Sandakhpur.jpg') }}">
+                    <img src="{{ url_for('static', filename='images/Sandakhpur2.jpg') }}">
+                    <img src="{{ url_for('static', filename='images/Sandakhpur3.jpg') }}">
+                </div>
+                <button class="prev" onclick="moveSlide(-1, 'sandakphu-carousel')">&#10094;</button>
+                <button class="next" onclick="moveSlide(1, 'sandakphu-carousel')">&#10095;</button>
+            </div>
+            <div class="text">
+                <p>The Sandakphu trek is the highest peak in West Bengal, located in the Singalila National Park in the Darjeeling district. It offers stunning panoramic views of four of the world's tallest peaks: Mount Everest, Kanchenjunga, Lhotse, and Makalu. The trek takes you through rhododendron forests, beautiful alpine meadows, and charming villages.</p>
+                <h3>Weather: -5°C to 15°C</h3>
+                <h3>Best Time to Visit: April-May & October-December</h3>
+                <a href="https://www.tripadvisor.in/ShowUserReviews-g1137809-d3598157-r166544806-Sandakphu.html" target="_blank" class="review-btn">Read Reviews</a>
+            </div>
+        </div>
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps?q=Sandakphu+Phalut+Trek,+Majua,+West+Bengal&output=embed" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Tabakoshi Section -->
+    <div class="section">
+        <h2>Tabakoshi</h2>
+        <div class="content">
+            <div class="carousel" id="tabakoshi-carousel">
+                <div class="carousel-images">
+                    <img src="{{ url_for('static', filename='images/tabakoshi.jpg') }}">
+                    <img src="{{ url_for('static', filename='images/tabakoshi2.jpg') }}">
+                    <img src="{{ url_for('static', filename='images/tabakoshi3.jpg') }}">
+                </div>
+                <button class="prev" onclick="moveSlide(-1, 'tabakoshi-carousel')">&#10094;</button>
+                <button class="next" onclick="moveSlide(1, 'tabakoshi-carousel')">&#10095;</button>
+            </div>
+            <div class="text">
+                <p>Tabakoshi is a scenic village near Mirik, West Bengal, nestled amidst lush tea gardens. It is known for its breathtaking landscapes, the Balasun River, and serene ambiance. The village offers an ideal retreat for nature lovers and travelers looking for peace away from crowded tourist spots.</p>
+                <h3>Weather: 10°C to 25°C</h3>
+                <h3>Best Time to Visit: Throughout the year</h3>
+                <a href="https://www.tripadvisor.in/ShowUserReviews-g1943018-d10263814.html" target="_blank" class="review-btn">Read Reviews</a>
+            </div>
+        </div>
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps?q=Tabakoshi,+West+Bengal&output=embed" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+    <img src="{{ url_for('static', filename='images/chat.avif') }}" alt="Small Image" class="bottom-right-image">
+    <div class="chatbot-container" id="chatbot-container">
+       
+
+    </div>
+
+    <div class="footer">
+        <p>&copy; <span id="year"></span> Exploring Bharat | Designed with ❤️</p>
+    </div>
+
+    <script>
+        function moveSlide(step, id) {
+            const slides = document.querySelector(`#${id} .carousel-images`);
+            const totalSlides = slides.children.length;
+            let index = Math.round(-parseInt(slides.style.transform.replace('translateX(', '')) / 100) || 0;
+            index = (index + step + totalSlides) % totalSlides;
+            slides.style.transform = `translateX(-${index * 100}%)`;
+        }
+        document.getElementById("year").textContent = new Date().getFullYear();
+    
+
+const chatbotIcon = document.querySelector('.bottom-right-image'); // Use class selector instead of ID
+const chatbotContainer = document.getElementById('chatbot-container');
+
+// Show chatbot on hover
+chatbotIcon.addEventListener('mouseenter', () => {
+    chatbotContainer.style.display = 'block'; // Show the chatbot
+});
+
+// Hide chatbot when mouse leaves the image
+chatbotIcon.addEventListener('mouseleave', () => {
+    chatbotContainer.style.display = 'none'; // Hide the chatbot
+});
+
+    </script>
+</body>
+</html>

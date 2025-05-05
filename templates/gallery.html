@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Josefin Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font: size 1.4rem;
+            margin: 0 20px;
+            flex-grow: 1;
+        }
+
+        header nav {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 10px 20px 0 0;
+            gap: 20px;
+
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin: 5px 10px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        header nav a:hover {
+            color: #f1c40f;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 120px 20px 40px;
+            gap: 40px;
+        }
+
+        .sidebar {
+            flex: 1 1 300px;
+            max-width: 350px;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h2 {
+            font-size: 22px;
+            color: #003366;
+            margin-bottom: 20px;
+        }
+
+        .sidebar p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .gallery-container {
+            flex: 2 1 600px;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .gallery-container::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(to bottom, transparent, #f0f0f0);
+            pointer-events: none;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding-bottom: 30px;
+        }
+
+        .gallery a {
+            display: block;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border-radius: 8px;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .gallery-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .gallery-container::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 4px;
+        }
+
+        .gallery-container::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            header h1 {
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+
+            header nav {
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                margin: 0;
+            }
+
+            header nav a {
+                margin: 5px 8px;
+            }
+        }
+        .logo h1 {
+        color: #00ff99;
+        font-size: 1.6rem;
+        text-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+        letter-spacing: 1px;
+      }
+      
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><h1><b>EXPLORING BHARAT'S HERITAGE AND CULTURE</b></h1></div>
+
+        <nav aria-label="Main Navigation">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('india') }}">India</a>
+            <a href="{{ url_for('hiddengems') }}">Hidden Gems</a>
+            <a href="{{ url_for('upload') }}">Uploads</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Sidebar -->
+        <section class="sidebar" aria-label="Introduction">
+            <h2>Explore Our Culture</h2>
+            <p>
+                Discover the rich heritage and diverse cultural history of India. From hidden gems to majestic landmarks, immerse yourself in the beauty of our country.
+                Click on the images to learn more about these iconic locations!
+            </p>
+        </section>
+
+        <!-- Gallery -->
+        <section class="gallery-container" aria-label="Cultural Gallery">
+            <div class="gallery">
+                <a href="westbengal.html" aria-label="View more about Sandakphu">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/Sandakhpur.jpg') }}" alt="Scenic view of Sandakphu in the Himalayas" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Sandakphu">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/Sandakhpur2.jpg') }}" alt="Another landscape of Sandakphu, West Bengal" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Sandakphu">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/Sandakhpur3.jpg') }}" alt="Sunset over mountains near Sandakphu" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Tabakoshi">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/tabakoshi.jpg') }}" alt="Tabakoshi village bridge and river" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Tabakoshi">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/tabakoshi2.jpg') }}" alt="Tea gardens and landscape in Tabakoshi" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Tabakoshi">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/tabakoshi3.jpg') }}" alt="Cottages and nature trails in Tabakoshi" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Sandakphu">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/Sandakhpur.jpg') }}" alt="Scenic view of Sandakphu in the Himalayas" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Sandakphu">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/Sandakhpur2.jpg') }}" alt="Another landscape of Sandakphu, West Bengal" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Sandakphu">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/Sandakhpur3.jpg') }}" alt="Sunset over mountains near Sandakphu" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Tabakoshi">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/tabakoshi.jpg') }}" alt="Tabakoshi village bridge and river" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Tabakoshi">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/tabakoshi2.jpg') }}" alt="Tea gardens and landscape in Tabakoshi" />
+                </a>
+                <a href="westbengal.html" aria-label="View more about Tabakoshi">
+                    <img loading="lazy" src="{{ url_for('static', filename='images/tabakoshi3.jpg') }}" alt="Cottages and nature trails in Tabakoshi" />
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

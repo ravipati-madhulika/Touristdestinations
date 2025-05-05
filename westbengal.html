@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>West Bengal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-image: url("bg5.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        nav {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            text-align: center;
+        }
+        nav h1 {
+            color: white;
+            margin: 0;
+            font-size: 25px;
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        .menu a:hover {
+            color: #ffcc00;
+        }
+        .section {
+            background: white;
+            color: black;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+        }
+        .section h2 {
+            text-align: center;
+            font-size: 30px;
+            padding: 10px;
+            background: black;
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 20px 0;
+        }
+        .carousel {
+            position: relative;
+            width: 45%;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .carousel-images {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .carousel img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+        .prev:hover, .next:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .text {
+            width: 50%;
+            font-size: 18px;
+            text-align: justify;
+        }
+        .text p {
+            margin-bottom: 20px;
+        }
+        .review-btn {
+            display: inline-block;
+            background-color: #ffcc00;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .review-btn:hover {
+            background-color: #ff9900;
+        }
+        .map-container {
+            margin: 20px auto;
+            width: 80%;
+            max-width: 1000px;
+        }
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background: black;
+            color: white;
+            margin-top: 20px;
+        }
+        .footer a {
+            color: #ffcc00;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>Exploring Bharat's Heritage and Culture</h1>
+        <div class="menu">
+            <a href="india.html">INDIA</a>
+            <a href="gallery.html">Gallery</a>
+        </div>
+    </nav>
+    <center><h1 style="color: white; margin-top: 30px;">WEST BENGAL</h1></center>
+
+    <!-- Sandakphu Section -->
+    <div class="section">
+        <h2>Sandakphu</h2>
+        <div class="content">
+            <div class="carousel" id="sandakphu-carousel">
+                <div class="carousel-images">
+                    <img src="gems/sandakhpur.jpg" alt="Sandakphu">
+                    <img src="gems/sandakhpur2.jpg" alt="Sandakphu View">
+                    <img src="gems/sandakhpur3.jpg" alt="Sandakphu Trek">
+                </div>
+                <button class="prev" onclick="moveSlide(-1, 'sandakphu-carousel')">&#10094;</button>
+                <button class="next" onclick="moveSlide(1, 'sandakphu-carousel')">&#10095;</button>
+            </div>
+            <div class="text">
+                <p>The Sandakphu trek is the highest peak in West Bengal, located in the Singalila National Park in the Darjeeling district. It offers stunning panoramic views of four of the world's tallest peaks: Mount Everest, Kanchenjunga, Lhotse, and Makalu. The trek takes you through rhododendron forests, beautiful alpine meadows, and charming villages.</p>
+                <h3>Weather: -5°C to 15°C</h3>
+                <h3>Best Time to Visit: April-May & October-December</h3>
+                <a href="https://www.tripadvisor.in/ShowUserReviews-g1137809-d3598157-r166544806-Sandakphu.html" target="_blank" class="review-btn">Read Reviews</a>
+            </div>
+        </div>
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps?q=Sandakphu+Phalut+Trek,+Majua,+West+Bengal&output=embed" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Tabakoshi Section -->
+    <div class="section">
+        <h2>Tabakoshi</h2>
+        <div class="content">
+            <div class="carousel" id="tabakoshi-carousel">
+                <div class="carousel-images">
+                    <img src="gems/tabakoshi.jpg" alt="Tabakoshi">
+                    <img src="gems/tabakoshi2.jpg" alt="Tabakoshi Tea Gardens">
+                    <img src="gems/tabakoshi3.jpg" alt="Tabakoshi River">
+                </div>
+                <button class="prev" onclick="moveSlide(-1, 'tabakoshi-carousel')">&#10094;</button>
+                <button class="next" onclick="moveSlide(1, 'tabakoshi-carousel')">&#10095;</button>
+            </div>
+            <div class="text">
+                <p>Tabakoshi is a scenic village near Mirik, West Bengal, nestled amidst lush tea gardens. It is known for its breathtaking landscapes, the Balasun River, and serene ambiance. The village offers an ideal retreat for nature lovers and travelers looking for peace away from crowded tourist spots.</p>
+                <h3>Weather: 10°C to 25°C</h3>
+                <h3>Best Time to Visit: Throughout the year</h3>
+                <a href="https://www.tripadvisor.in/ShowUserReviews-g1943018-d10263814.html" target="_blank" class="review-btn">Read Reviews</a>
+            </div>
+        </div>
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps?q=Tabakoshi,+West+Bengal&output=embed" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; <span id="year"></span> Exploring Bharat | Designed with ❤️</p>
+    </div>
+
+    <script>
+        function moveSlide(step, id) {
+            const slides = document.querySelector(`#${id} .carousel-images`);
+            const totalSlides = slides.children.length;
+            let index = Math.round(-parseInt(slides.style.transform.replace('translateX(', '')) / 100) || 0;
+            index = (index + step + totalSlides) % totalSlides;
+            slides.style.transform = `translateX(-${index * 100}%)`;
+        }
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

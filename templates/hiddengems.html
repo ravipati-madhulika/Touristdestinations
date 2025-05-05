@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Gems</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/bg3.jpg') }}");
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+    
+        nav {
+            background-color: #003366;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 500;
+        }
+    
+        nav h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+    
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+    
+        nav a:hover {
+            color: #ffcc00;
+        }
+    
+        .section {
+            background-color: rgb(97, 224, 150);
+            margin: 30px auto;
+            padding: 40px;
+            max-width: 1000px; /* Reduced width for a more centered feel */
+            border-radius: 10px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+        }
+    
+        .section h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #003366;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+    
+        .post {
+            background-color: #ffffff;
+            margin-bottom: 20px; /* Reduced margin between posts */
+            padding: 15px 20px; /* Reduced padding for a smaller post box */
+            border-radius: 8px; /* Slightly more subtle rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 800px; /* Reduced width of the post */
+            margin: 10px auto; /* Center-align posts */
+        }
+    
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+    
+        .post h2 {
+            font-size: 24px; /* Slightly smaller font size */
+            margin-bottom: 10px;
+            color: #003366;
+        }
+    
+        .post img {
+            width: 100%;
+            max-width: 300px; /* Reduced max-width for images */
+            margin: 10px 0;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+    
+        .post .description {
+            font-size: 16px; /* Reduced font size for description */
+            line-height: 1.6;
+            margin-top: 15px; /* Reduced margin */
+            color: #666;
+        }
+    
+        .post .like-button {
+            background-color: #ffcc00;
+            color: #003366;
+            padding: 8px 15px; /* Slightly smaller button */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px; /* Reduced font size */
+            transition: background-color 0.3s ease;
+        }
+    
+        .post .like-button:hover {
+            background-color: #ff9900;
+        }
+    
+        .star-rating {
+            display: inline-block;
+            margin-top: 10px;
+        }
+    
+        .star-rating input {
+            display: none;
+        }
+    
+        .star-rating label {
+            font-size: 20px; /* Slightly smaller star size */
+            color: #ffcc00;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+    
+        .star-rating input:checked ~ label {
+            color: #ffaa00;
+        }
+    
+        .feedback-section {
+            margin-top: 20px; /* Reduced margin */
+        }
+    
+        .feedback-section strong {
+            font-size: 16px; /* Reduced font size */
+            margin-bottom: 10px;
+        }
+    
+        .feedback-section p {
+            font-size: 14px; /* Smaller comment text */
+            margin-bottom: 10px;
+        }
+    
+        .feedback-section button {
+            background-color: #ffcc00;
+            color: #003366;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px; /* Smaller button font */
+            transition: background-color 0.3s ease;
+        }
+    
+        .feedback-section button:hover {
+            background-color: #ff9900;
+        }
+    
+        .footer {
+            text-align: center;
+            background-color: #003366;
+            color: white;
+            padding: 15px; /* Reduced padding */
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    
+        .footer a {
+            color: #ffcc00;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    
+        .footer a:hover {
+            color: white;
+        }
+    </style>
+    
+</head>
+<body>
+
+<nav>
+    <h1>EXPLORING BHARAT'S HERITAGE AND CULTURE</h1>
+    <div>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('india') }}">Map</a>
+        <a href="{{ url_for('gallery') }}">Gallery</a>
+        <a href="{{ url_for('upload') }}">Uploads</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</nav>
+
+<div class="section">
+    <h1>All Posts</h1>
+    {% if posts %}
+        {% for post in posts %}
+        <div class="post">
+            <h2>{{ post['name'] }}</h2>
+
+            <div>
+                {% for image in post.image_paths.split(',') %}
+                <img src="{{ url_for('download_file', filename=image) }}" alt="Place Image">
+                {% endfor %}
+            </div>
+
+            <p class="description">{{ post['description'] }}</p>
+
+            <button id="like-btn-{{ post['id'] }}" class="like-button" onclick="togglePostLike({{ post['id'] }})">
+                ❤️ Like
+            </button>
+
+            <p><strong>Average Rating:</strong>
+                {% if post['avg_rating'] is defined and post['avg_rating'] is not none %}
+                    {{ post['avg_rating']|round(1) }}/5
+                {% else %}
+                    0.0/5
+                {% endif %}
+            </p>
+
+            <form action="{{ url_for('submit_rating_feedback', place_id=post['id']) }}" method="POST">
+                <div class="star-rating">
+                    {% for i in range(5, 0, -1) %}
+                        <input type="radio" name="rating" id="star{{ i }}-{{ post['id'] }}" value="{{ i }}">
+                        <label for="star{{ i }}-{{ post['id'] }}">★</label>
+                    {% endfor %}
+                </div>
+                <br>
+                <textarea name="feedback" rows="2" cols="40" placeholder="Write your thoughts..."></textarea><br>
+                <button type="submit">Submit</button>
+            </form>
+
+            <div class="feedback-section">
+                <strong>User Comments:</strong>
+                {% for fb in post['feedbacks'] %}
+                    <p>
+                        {{ fb.user_email.split('@')[0] }} - {{ fb.comment }}
+                        {% if fb.user_email == current_user.email %}
+                            <form action="{{ url_for('delete_post_feedback', feedback_id=fb.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" onclick="return confirm('Delete your comment and rating for this post?')">🗑️ Delete</button>
+                            </form>
+                        {% endif %}
+                    </p>
+                {% else %}
+                    <p>No comments yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p> <a href="{{ url_for('upload') }}">Create a post</a>.</p>
+    {% endif %}
+</div>
+
+<div class="footer">
+    <p>&copy; <span id="year"></span> Exploring Bharat | Designed with ❤️</p>
+</div>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ state_name }} - Places to Visit</title>
+    <nav>
+        <h1>Exploring Bharat's Heritage and Culture</h1>
+        <div>
+            <a href="{{ url_for('home') }}" style="float: left;">home</a>
+            <a href="{{ url_for('india') }}">Map</a>
+            <a href="{{ url_for('gallery') }}">Gallery</a>
+            <a href="{{ url_for('hiddengems') }}">Hidden Gems</a>
+            <a href="{{ url_for('upload') }}">Uploads</a>
+            <a href="{{ url_for('liked_places') }}" style="float: right;">Liked Places</a>
+        </div>
+    </nav>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .like-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .star-rating {
+            direction: rtl;
+            display: inline-flex;
+        }
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 24px;
+            color: gray;
+            cursor: pointer;
+        }
+        .star-rating input[type="radio"]:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: gold;
+        }
+        .place-card {
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            background-color: #f9f9f9;
+        }
+        .images img {
+            max-width: 200px;
+            border-radius: 8px;
+            margin: 5px;
+        }
+        .feedback-section {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function toggleLike(placeId) {
+            fetch(`/toggle_like/${placeId}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                const btn = document.getElementById(`like-btn-${placeId}`);
+                btn.textContent = data.liked ? '💔 Unlike' : '❤️ Like';
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>{{ state_name }}</h1>
+    <div class="places-container">
+        {% for item in places_data %}
+        {% set place = item.place %}
+        <div class="place-card">
+            <h2>{{ place.name }}</h2>
+
+            <div class="images">
+                {% for image in item.images %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ image) }}" alt="{{ place.name }}">
+                {% endfor %}
+            </div>
+
+            <p>{{ place.description }}</p>
+
+            <a href="https://www.google.com/maps/search/?api=1&query={{ place.name | urlencode }}" target="_blank">
+                📍 Get Directions
+            </a>
+
+            <button id="like-btn-{{ place.id }}" class="like-button" onclick="toggleLike({{ place.id }})">
+                ❤️ Like
+            </button>
+
+            <p><strong>Average Rating:</strong> {{ item.avg_rating|round(1) }}</p>
+
+            <!-- ⭐ Rating Form -->
+            <!-- Combined Rating & Feedback Form -->
+<form action="{{ url_for('submit_rating_feedback', place_id=place.id) }}" method="POST">
+    <div class="star-rating">
+        {% for i in range(5, 0, -1) %}
+            <input type="radio" name="rating" id="star{{ i }}-{{ place.id }}" value="{{ i }}">
+            <label for="star{{ i }}-{{ place.id }}">★</label>
+        {% endfor %}
+    </div>
+    <br>
+    <textarea name="feedback" id="feedback-{{ place.id }}" rows="2" cols="40" placeholder="Write your thoughts..."></textarea><br>
+    <button type="submit">Submit</button>
+</form>
+
+
+           <!-- 💬 Feedbacks -->
+        <div class="feedback-section">
+            <strong>User Comments:</strong>
+            {% for fb in item.feedbacks %}
+                <p>
+                    {{ fb.user_email.split('@')[0] }}- {{ fb.comment }}
+                    {% if fb.user_email == current_email %}
+                        <form action="{{ url_for('delete_feedback_and_rating', place_id=place.id) }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="feedback_id" value="{{ fb.id }}">
+                            <button type="submit" onclick="return confirm('Delete your comment and rating for this place?')">🗑️ Delete</button>
+                       </form>
+                    {% endif %}
+                </p>
+            {% else %}
+                <p>No comments yet.</p>
+            {% endfor %}
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
